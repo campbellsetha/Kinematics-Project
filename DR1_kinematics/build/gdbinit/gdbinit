@@ -1,0 +1,2 @@
+source /home/seth/DR1_kinetics/build/gdbinit/symbols
+source /home/seth/DR1_kinetics/build/gdbinit/connect

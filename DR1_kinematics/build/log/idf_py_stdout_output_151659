@@ -1,0 +1,16 @@
+Command: cmake -G Ninja -B /home/seth/DR1_kinetics/build -DPYTHON_DEPS_CHECKED=1 -DPYTHON=/home/seth/.espressif/python_env/idf6.0_py3.12_env/bin/python -DESP_PLATFORM=1 -DCCACHE_ENABLE=False /home/seth/DR1_kinetics
+-- Component directory /home/seth/esp/v6.0/esp-idf/components/mqtt does not contain a CMakeLists.txt file. No component will be added
+-- Minimal build - ON
+-- git rev-parse returned 'fatal: not a git repository (or any of the parent directories): .git'
+-- Could not use 'git describe' to determine PROJECT_VER.
+-- Building ESP-IDF components for target esp32c3
+NOTICE: Manifest files have changed, solving dependencies.
+....HINT: Failed to solve dependencies. Here are some possible reasons:
+Component "espressif/usb_stream" (requires in /home/seth/DR1_kinetics/main/idf_component.yml) has suitable versions for other targets:
+- 1.5.1: esp32s2, esp32s3
+Is your current target esp32c3 set correctly?
+Component "espressif/usb_stream" (requires in /home/seth/DR1_kinetics/main/idf_component.yml) has suitable versions for other targets:
+- 1.5.1: esp32s2, esp32s3
+Is your current target esp32c3 set correctly?
+HINT: Please check manifest file of the following component(s): main
+-- Configuring incomplete, errors occurred!
