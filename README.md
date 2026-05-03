@@ -1,5 +1,5 @@
 # Kinematics-Project
-Purpose:Exploration into Forward and Inverse Kinematics for robotic motion. This is part of a Directed Reading elective series that takes during the Spring 2026 term at University of Washington Tacoma
+Purpose: Exploration into Forward and Inverse Kinematics for robotic motion. This is part of a Directed Reading elective series that takes during the Spring 2026 term at University of Washington Tacoma
 
 &emsp;This project uses the existing SO-ARM101 leader/follower arm pairs and their build kits. Since my goal for the directed reading was to apply the principles of forward and inverse kinematics leveraging an already developed system was desirable. Most of these kits utilize the Arduino boards and associated IDE, however since I have other projects in the near future that require the use of various ESPs I decided to utilize the ESP-IDF instead. My primary source materials are the text **Robotics Modeling, Planning, and Control** by *Bruno Siciliano, Lorenzo Sciavicco, Luigi Villani, Giuseppe Oriolo* and the youtube channel found [here](http://www.youtube.com/@asodemann3). 
 
