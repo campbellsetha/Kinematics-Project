@@ -16,9 +16,9 @@ enum class Role {
 
 uint8_t own_mac[6];
 
-class ESPNowNode {
+class ESPNow {
 public:
-    ESPNowNode() = default;
+    ESPNow() = default;
 
     void init();
     void send_msg(Role role, const uint8_t* data, size_t len);
