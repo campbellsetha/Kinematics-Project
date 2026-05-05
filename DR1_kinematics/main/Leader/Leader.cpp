@@ -15,7 +15,8 @@ extern "C" {
 
 }
 
-esp_now_node ESP_NOW_NODE;
+ESPNOW ESP_NOW_NODE;
+ServoBusBase SERVO_BUS_NODE;
 
 int operational_mode = 1;
 
@@ -32,8 +33,16 @@ return servo_read.read_servo_positions;
 
 void Teleoperation(){
     do {
-        esp_now_node::send_msg(Role FLOW, get_positions(), len);
+        esp_now_node::send_msg(Role FLOW, getServoPositions(), len);
     } while (operational_mode == 1)
+}
+
+int getServoPositions(){
+
+    for(int i = 0; i < 6; i++){
+        SERVO_BUS_NODE.getServoPosition(i);
+    }
+
 }
 
 

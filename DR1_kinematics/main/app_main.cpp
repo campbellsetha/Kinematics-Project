@@ -13,9 +13,6 @@ extern "C" {
 
 }
 
-
-static double jAngles[6] = {0};
-
 main(){
     int choice;
     welcome();
@@ -40,6 +37,7 @@ void welcome() {
     std::cout << "What would you like to try?";
     std::cout << "1] Teleoperation";
     std::cout << "2] Waypoint Operation";
+    std::cin >> choice;
 
 }
 
