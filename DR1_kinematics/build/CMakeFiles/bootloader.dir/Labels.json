@@ -2,34 +2,34 @@
 	"sources" : 
 	[
 		{
-			"file" : "/home/seth/DR1_kinetics/build/CMakeFiles/bootloader"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/CMakeFiles/bootloader"
 		},
 		{
-			"file" : "/home/seth/DR1_kinetics/build/CMakeFiles/bootloader.rule"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/CMakeFiles/bootloader.rule"
 		},
 		{
-			"file" : "/home/seth/DR1_kinetics/build/CMakeFiles/bootloader-complete.rule"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/CMakeFiles/bootloader-complete.rule"
 		},
 		{
-			"file" : "/home/seth/DR1_kinetics/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
 		},
 		{
-			"file" : "/home/seth/DR1_kinetics/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
 		},
 		{
-			"file" : "/home/seth/DR1_kinetics/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
 		},
 		{
-			"file" : "/home/seth/DR1_kinetics/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
 		},
 		{
-			"file" : "/home/seth/DR1_kinetics/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
 		},
 		{
-			"file" : "/home/seth/DR1_kinetics/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
 		},
 		{
-			"file" : "/home/seth/DR1_kinetics/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
+			"file" : "/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
 		}
 	],
 	"target" : 

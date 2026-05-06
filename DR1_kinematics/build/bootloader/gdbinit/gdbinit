@@ -1,0 +1,2 @@
+source /Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/bootloader/gdbinit/symbols
+source /Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/bootloader/gdbinit/connect

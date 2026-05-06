@@ -1,0 +1,9 @@
+Command: cmake -G Ninja -B /Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build -DPYTHON_DEPS_CHECKED=1 -DPYTHON=/Users/sethcampbell/.espressif/python_env/idf6.0_py3.13_env/bin/python -DESP_PLATFORM=1 -DCCACHE_ENABLE=False /Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics
+Configuration Report               
+ ───────────────────────────────── 
+   Parser Version: 1               
+   Verbosity: default              
+   Defaults policy: sdkconfig      
+   Status: Finished successfully   
+                                   
+ ───────────────────────────────── 

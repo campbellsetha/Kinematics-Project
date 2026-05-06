@@ -1,2 +1,2 @@
-source /home/seth/DR1_kinetics/build/gdbinit/symbols
-source /home/seth/DR1_kinetics/build/gdbinit/connect
+source /Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/gdbinit/symbols
+source /Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/gdbinit/connect

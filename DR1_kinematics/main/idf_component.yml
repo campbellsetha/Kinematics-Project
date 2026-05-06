@@ -1,3 +1,2 @@
 dependencies:
   espressif/led_strip: ^3.0.0
-  espressif/usb_stream: ^1.5.1

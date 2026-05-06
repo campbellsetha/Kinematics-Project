@@ -1,3 +1,21 @@
-idf_component_register(SRCS "driver.cpp"
-                       INCLUDE_DIRS ".")
-                       REQUIRES esp_now
+idf_component_register(
+    SRCS
+        "app_main.cpp"
+        "frame.cpp"
+        "Common/ESPNow.cpp"
+        "Leader/Leader.cpp"
+        "Primary/primary.cpp"
+        "ServoControl/ServoBusBase.cpp"
+    INCLUDE_DIRS
+        "."
+        "Common"
+        "Leader"
+        "Primary"
+        "ServoControl"
+    REQUIRES
+        esp_wifi
+        freertos
+        esp_driver_uart
+        esp_driver_usb_serial_jtag
+        nvs_flash
+)

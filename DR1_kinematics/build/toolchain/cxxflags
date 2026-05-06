@@ -1,4 +1,4 @@
 -march=rv32imc_zicsr_zifencei
 -mtune=esp-base
--specs=picolibc.specs
+"-specs=/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build/specs/picolibc.specs"
 -fno-rtti

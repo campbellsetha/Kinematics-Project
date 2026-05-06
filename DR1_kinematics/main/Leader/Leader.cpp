@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <string>
 #include <iostream>
-#include "common/esp_now_node.hpp"
+#include "ESPNow.hpp"
 
 extern "C" {
     #include "nvs_flash.h"

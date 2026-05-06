@@ -2,14 +2,15 @@
 #include <cstring>
 
 extern "C" {
-    #include "freertos/FreeRTOS.h"
-    #include "freertos/task.h"
+    #include "driver/uart.h"
 }
 
 ServoBusBase(uint8_t* servoIDs) {
     //set to pins to be used from ESP32 (should be 20(Tx), 21(Rx), but port is unknown)
     memccpy(servoArray, servoIDs, 6);
 }
+
+
 // See Servo Communication Manual in the Reference folder for information regarding the protocol structure.
 private servoArray
 private unit16_t initial = 0xFF 0xFF;
