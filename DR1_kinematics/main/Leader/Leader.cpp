@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include "ESPNow.hpp"
+#include "ServoCommunication/ServoCommunication.hpp"
 
 extern "C" {
     #include "nvs_flash.h"
@@ -15,8 +16,8 @@ extern "C" {
 
 }
 
-ESPNOW ESP_NOW_NODE;
-ServoBusBase SERVO_BUS_NODE;
+ESPNow ESP_NOW_NODE;
+ServoCommunication SERVO_BUS_NODE;
 
 int operational_mode = 1;
 
@@ -26,7 +27,7 @@ void set_mode(int mode){
 
 std::array<uint8_t, 6> get_positions (){
     double angles[6]={
-        Servo
+        ServoCommunication.
     }
 return servo_read.read_servo_positions;
 }

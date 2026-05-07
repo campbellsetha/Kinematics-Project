@@ -1,4 +1,5 @@
 {
     "idf.currentSetup": "/Users/sethcampbell/.espressif/v6.0.1/esp-idf",
-    "C_Cpp.intelliSenseEngine": "default"
+    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.errorSquiggles": "enabled"
 }

@@ -6,15 +6,18 @@ idf_component_register(
         "Leader/Leader.cpp"
         "Primary/primary.cpp"
         "ServoControl/ServoBusBase.cpp"
+        "ServoCommunication/ServoCommunication.cpp"
     INCLUDE_DIRS
         "."
         "Common"
         "Leader"
         "Primary"
         "ServoControl"
+        "ServoCommunication"
     REQUIRES
         esp_wifi
         freertos
+        esp_err
         esp_driver_uart
         esp_driver_usb_serial_jtag
         nvs_flash

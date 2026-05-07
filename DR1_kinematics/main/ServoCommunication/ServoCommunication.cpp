@@ -1,19 +1,24 @@
-#include "ServoBusBase.hpp"
+#include "ServoCommunication.hpp"
 #include <cstring>
 
 extern "C" {
+    #include "esp_err.h"
     #include "driver/uart.h"
 }
 
-ServoBusBase(uint8_t* servoIDs) {
+ServoCommunication() {
     //set to pins to be used from ESP32 (should be 20(Tx), 21(Rx), but port is unknown)
-    memccpy(servoArray, servoIDs, 6);
 }
 
-
-// See Servo Communication Manual in the Reference folder for information regarding the protocol structure.
-private servoArray
-private unit16_t initial = 0xFF 0xFF;
+void setupUARTCommunication() {
+    uart_config_t CONFIG = {
+        .baud_rate = 1000000,
+        .data_bits = uart_data_,
+        .parity = uart_set_parity(false),
+        .stop_bits = uart_get_stop_bits,
+        .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
+    };
+}
 
 private uint8_t[8] checkSum(uint8_t* msg) {
     uint8_t sum;
@@ -26,7 +31,7 @@ private uint8_t[8] checkSum(uint8_t* msg) {
     return msg;
 }
 
-bool adjustServoPosition(uint8_t servoID, double angle) {
+bool ServoCommunication::adjustServoPosition(int servoID, double angle) {
     if (!IDCheck(servoID))
         return false;
 
@@ -36,7 +41,7 @@ bool adjustServoPosition(uint8_t servoID, double angle) {
 
     uint8_t TTL_PROTOCOL_MSG[8] {
         initial,
-        servoID,
+        cast<uint8_t>(servoID),
         0x04,
         0x03,
         0x2A,
@@ -52,7 +57,7 @@ bool adjustServoPosition(uint8_t servoID, double angle) {
     //0x2A is the goal position address
 }
 
-std::vector<double> readAllServoPositions(int jointNumber) {
+std::vector<double> ServoCommunication::readAllServoPositions() {
 
     std::vector<double> servoPositions;
     for (const auto& [joint : ID] : jointToServoMap){
@@ -65,7 +70,7 @@ std::vector<double> readAllServoPositions(int jointNumber) {
 }
 
 bool IDCheck(uint8_t servoID) {
-    if (servoID < 0x00 || servoID > 0xFD)
+    if (servoID < 0x00 || servoID > 0x06)
         return false;
     return true;
 }
