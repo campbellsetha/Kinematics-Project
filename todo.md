@@ -1,6 +1,7 @@
 Communication  
   ~[ ] SCS Servo Library addition (create class for servo read/write).~  
-  [X] Serial communication library (not able to be added to the IDF currently, requires troubleshooting)  
+  [X] Serial communication library (not able to be added to the IDF currently, requires troubleshooting)
+  
 Joint testing    
   ~[ ] The text mentions the use of Calibration methods to determine joint angles. This is a more accurate method vs using calipers to "best guess" the joint lengths.~  
   ~[O] Print Calibration plates (1 printed, another in progress, 3 total)~   
