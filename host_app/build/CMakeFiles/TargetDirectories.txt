@@ -1,0 +1,3 @@
+/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/host_app/build/CMakeFiles/host_app.dir
+/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/host_app/build/CMakeFiles/edit_cache.dir
+/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/host_app/build/CMakeFiles/rebuild_cache.dir

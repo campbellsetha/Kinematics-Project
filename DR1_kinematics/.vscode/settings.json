@@ -1,5 +1,19 @@
 {
-    "idf.currentSetup": "/Users/sethcampbell/.espressif/v6.0.1/esp-idf",
-    "C_Cpp.intelliSenseEngine": "default",
-    "C_Cpp.errorSquiggles": "enabled"
+  "idf.currentSetup": "/Users/sethcampbell/.espressif/v6.0.1/esp-idf",
+  "C_Cpp.intelliSenseEngine": "default",
+  "C_Cpp.errorSquiggles": "enabled",
+  "idf.openOcdConfigs": [
+    "board/esp32c3-builtin.cfg"
+  ],
+  "idf.customExtraVars": {
+    "IDF_TARGET": "esp32c3"
+  },
+  "clangd.path": "/Users/sethcampbell/.espressif/tools/esp-clang/esp-20.1.1_20250829/esp-clang/bin/clangd",
+  "clangd.arguments": [
+    "--background-index",
+    "--query-driver=**",
+    "--compile-commands-dir=/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build"
+  ],
+  "idf.flashType": "UART",
+  "idf.port": "/dev/tty.usbmodem11301"
 }

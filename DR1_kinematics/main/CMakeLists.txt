@@ -1,24 +1,27 @@
 idf_component_register(
+    # frame.cpp is excluded — kinematics library, not flashed to ESP
     SRCS
         "app_main.cpp"
-        "frame.cpp"
         "Common/ESPNow.cpp"
+        "Common/wifi_init.c"
         "Leader/Leader.cpp"
         "Primary/primary.cpp"
-        "ServoControl/ServoBusBase.cpp"
+        "Follower/Follower.cpp"
         "ServoCommunication/ServoCommunication.cpp"
     INCLUDE_DIRS
         "."
         "Common"
         "Leader"
         "Primary"
-        "ServoControl"
+        "Follower"
         "ServoCommunication"
     REQUIRES
         esp_wifi
+        esp_event
+        esp_netif
         freertos
-        esp_err
         esp_driver_uart
         esp_driver_usb_serial_jtag
         nvs_flash
+        esp_driver_gpio
 )

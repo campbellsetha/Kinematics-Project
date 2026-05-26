@@ -14,9 +14,6 @@
 # EXTERNAL cache entries
 ########################
 
-//No help, variable specified on the command line.
-CCACHE_ENABLE:UNINITIALIZED=False
-
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/Users/sethcampbell/.espressif/tools/riscv32-esp-elf/esp-15.2.0_20251204/riscv32-esp-elf/bin/riscv32-esp-elf-addr2line
 
@@ -375,9 +372,6 @@ Mbed TLS_IS_TOP_LEVEL:STATIC=OFF
 Mbed TLS_SOURCE_DIR:STATIC=/Users/sethcampbell/.espressif/v6.0.1/esp-idf/components/mbedtls/mbedtls
 
 //No help, variable specified on the command line.
-PYTHON:UNINITIALIZED=/Users/sethcampbell/.espressif/python_env/idf6.0_py3.13_env/bin/python
-
-//No help, variable specified on the command line.
 PYTHON_DEPS_CHECKED:UNINITIALIZED=1
 
 //Value Computed by CMake
@@ -591,7 +585,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=89
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -641,7 +635,7 @@ C_COMPILER_SUPPORTS_WFORMAT_SIGNEDNESS:INTERNAL=1
 //Details about finding Git
 FIND_PACKAGE_MESSAGE_DETAILS_Git:INTERNAL=[/opt/homebrew/bin/git][v2.49.0()]
 //Details about finding Python3
-FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/Users/sethcampbell/.espressif/python_env/idf6.0_py3.13_env/bin/python][found components: Interpreter ][v3.13.3()]
+FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/Users/sethcampbell/.espressif/tools/python/v6.0.1/venv/bin/python][found components: Interpreter ][v3.13.3()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //ADVANCED property for variable: GIT_EXECUTABLE
@@ -652,10 +646,10 @@ _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/usr/local
 _Python3_Compiler_REASON_FAILURE:INTERNAL=
 //Development reason failure
 _Python3_Development_REASON_FAILURE:INTERNAL=
-_Python3_EXECUTABLE:INTERNAL=/Users/sethcampbell/.espressif/python_env/idf6.0_py3.13_env/bin/python
+_Python3_EXECUTABLE:INTERNAL=/Users/sethcampbell/.espressif/tools/python/v6.0.1/venv/bin/python
 //Python3 Properties
-_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;13;3;32;64;;;abi3;/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13;/Users/sethcampbell/.espressif/python_env/idf6.0_py3.13_env/lib/python3.13;/Users/sethcampbell/.espressif/python_env/idf6.0_py3.13_env/lib/python3.13/site-packages;/Users/sethcampbell/.espressif/python_env/idf6.0_py3.13_env/lib/python3.13/site-packages
-_Python3_INTERPRETER_SIGNATURE:INTERNAL=219daaa2fec9a20def38b701d0219f41
+_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;13;3;32;64;;;abi3;/opt/homebrew/opt/python@3.13/Frameworks/Python.framework/Versions/3.13/lib/python3.13;/Users/sethcampbell/.espressif/tools/python/v6.0.1/venv/lib/python3.13;/Users/sethcampbell/.espressif/tools/python/v6.0.1/venv/lib/python3.13/site-packages;/Users/sethcampbell/.espressif/tools/python/v6.0.1/venv/lib/python3.13/site-packages
+_Python3_INTERPRETER_SIGNATURE:INTERNAL=ead877ccf3ef09d0f06cd9335058b60c
 //NumPy reason failure
 _Python3_NumPy_REASON_FAILURE:INTERNAL=
 
