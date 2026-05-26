@@ -6,6 +6,7 @@ Joint testing
   ~[O] Print Calibration plates (1 printed, another in progress, 3 total)~   
   [X] Functional check of hardware ~(an existing, plug and play application exists to show manipulation of individual servos)~\ 
   [X] Teleoperations online and telemetry is correctly reported to the host.
+  
 Kinematics   
   [ ] Forward Kinematics needs to be cleaned up ~(waiting on calibration for joint positions)~   
   [ ] Inverse Kinematics, Geometric approach is being used, Jacobian if time permits (Class needs to be written)
