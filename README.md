@@ -8,3 +8,6 @@ Purpose: Exploration into Forward and Inverse Kinematics for robotic motion. Thi
 &emsp;The final stage of this project is to show tele-operations and waypoint operations between the leader and follower arms. Preferablely by utilizing ESP's wireless communication protocol ESP-NOW as a channel between the arms and the laptop running the commandline application coordinating the two arms. Since this project is an exploration into kinematics, I'm not attempting anything more than a reasonable, straightforward approach to inverse kinematics.
 
 &emsp;This Repository will receive a few updates after this elective is over to close it out, however I am looking to explore other directed readings in the future. Specifically, machine learning applications to robotic motion, movement planning to handle best case for multiple solutions in inverse kinematics, as well as pairing with vision systems (camera, LIDAR). These other directed readings will use other repositories, but will be linked here in the future.
+
+&emsp;[UPDATE May 26th] Teleoperation is online and working. Below is the first run with the Follower operating under guidance of the Leader.
+![img1](Resources/Images/movement1.gif
