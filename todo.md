@@ -5,7 +5,7 @@ Communication
 Joint testing    
   ~[ ] The text mentions the use of Calibration methods to determine joint angles. This is a more accurate method vs using calipers to "best guess" the joint lengths.~  
   ~[O] Print Calibration plates (1 printed, another in progress, 3 total)~   
-  [X] Functional check of hardware ~(an existing, plug and play application exists to show manipulation of individual servos)~\ 
+  [X] Functional check of hardware ~(an existing, plug and play application exists to show manipulation of individual servos)~  
   [X] Teleoperations online and telemetry is correctly reported to the host.
   
 Kinematics   
