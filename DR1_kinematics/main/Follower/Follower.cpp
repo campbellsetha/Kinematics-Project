@@ -17,18 +17,20 @@ static ESPNow ESP_NOW_NODE;
 static ServoCommunication SERVO_BUS_NODE;
 static OperationMode CURRENT_OPERATION;
 
-// Depth-1 queue decouples the ESP-NOW WiFi callback from blocking UART servo writes.
 static QueueHandle_t s_positions_queue = nullptr;
+static QueueHandle_t e_coordinates_queue = nullptr;
 
 static void onPositionsReceived(ROLE /*src*/, const MSGALLPOSITIONS* msg) {
-    // Called from the ESP-NOW/WiFi task — must not block. Post latest frame and return.
     xQueueOverwrite(s_positions_queue, msg);
 }
 
 static void servoTask(void*) {
-    MSGALLPOSITIONS msg;
-    uint16_t last_positions[6] = {2048, 2048, 2048, 2048, 2048, 2048};
-    uint16_t last_speeds[6]    = {200,  200,  200,  200,  200,  200};
+    MSGALLPOSITIONS msgPosi;
+    MSGCOORDINATES msgCoord;
+
+    uint16_t last_positions[6]  = {2048, 2048, 2048, 2048, 2048, 2048};
+    uint16_t last_speeds[6]     = {200,  200,  200,  200,  200,  200};
+    uint16_t last_coordinate[3] = {50, 50, 50};
 
     // Seed last_positions from actual servo positions so the
     // first received leader frame doesn't snap the arm from 2048.
@@ -39,23 +41,23 @@ static void servoTask(void*) {
                 if (boot_pos[i] != 0xFFFF) last_positions[i] = boot_pos[i];
     }
 
-    static constexpr uint16_t DEADBAND    = 4;
-    static constexpr uint16_t MIN_SPEED   = 200;
-    static constexpr uint16_t MAX_SPEED   = 1500;
-    static constexpr uint16_t SPEED_SCALE = 50;
+    static const uint16_t DEADBAND    = 4;
+    static const uint16_t MIN_SPEED   = 200;
+    static const uint16_t MAX_SPEED   = 1500;
+    static const uint16_t SPEED_SCALE = 50;
 
     while (true) {
         if (xQueueReceive(s_positions_queue, &msg, portMAX_DELAY) != pdTRUE) continue;
 
         ESP_LOGI("FOLLOWER", "RX [%d %d %d %d %d %d]",
-        msg.positions[0], msg.positions[1], msg.positions[2],
-        msg.positions[3], msg.positions[4], msg.positions[5]);
+        msgPosi.positions[0], msgPosi.positions[1], msgPosi.positions[2],
+        msgPosi.positions[3], msgPosi.positions[4], msgPosi.positions[5]);
 
         for (int i = 0; i < 6; i++) {
-            if (msg.positions[i] == 0xFFFF) continue;
-            int delta = abs((int)msg.positions[i] - (int)last_positions[i]);
+            if (msgPosi.positions[i] == 0xFFFF) continue;
+            int delta = abs((int)msgPosi.positions[i] - (int)last_positions[i]);
             if (delta < DEADBAND) continue;
-            last_positions[i] = msg.positions[i];
+            last_positions[i] = msgPosi.positions[i];
             uint16_t spd = (uint16_t)(delta * SPEED_SCALE);
             last_speeds[i] = spd < MIN_SPEED ? MIN_SPEED
                            : spd > MAX_SPEED ? MAX_SPEED : spd;
@@ -86,6 +88,8 @@ static void servoTask(void*) {
 
 void Follower::init() {
     s_positions_queue = xQueueCreate(1, sizeof(MSGALLPOSITIONS));
+    e_coordinate_queue = xQueueCreate(1, sizeof(MSGCOORDINATES));
+
     SERVO_BUS_NODE.setupUARTCommunication();
 
     vTaskDelay(pdMS_TO_TICKS(500));       // let servos finish power-up
