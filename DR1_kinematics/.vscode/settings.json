@@ -1,5 +1,5 @@
 {
-  "idf.currentSetup": "/Users/sethcampbell/.espressif/v6.0/esp-idf",
+  "idf.currentSetup": "/Users/sethcampbell/.espressif/v6.0.1/esp-idf",
   "C_Cpp.intelliSenseEngine": "default",
   "C_Cpp.errorSquiggles": "enabled",
   "idf.openOcdConfigs": [
@@ -15,5 +15,5 @@
     "--compile-commands-dir=/Volumes/Macintosh Extended NVME/Github/Kinematics-Project/DR1_kinematics/build"
   ],
   "idf.flashType": "UART",
-  "idf.port": "/dev/tty.usbmodem11301"
+  "idf.port": "/dev/tty.usbmodem112301"
 }

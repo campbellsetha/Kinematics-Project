@@ -1,11 +1,12 @@
 idf_component_register(
-    # frame.cpp is excluded — kinematics library, not flashed to ESP
     SRCS
         "app_main.cpp"
         "Common/ESPNow.cpp"
         "Common/wifi_init.c"
+        "Common/Frame.cpp"
+        "Leader/Forward_K.cpp"
         "Leader/Leader.cpp"
-        "Primary/primary.cpp"
+        "Primary/Primary.cpp"
         "Follower/Follower.cpp"
         "ServoCommunication/ServoCommunication.cpp"
     INCLUDE_DIRS

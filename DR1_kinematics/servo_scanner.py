@@ -1391,6 +1391,226 @@ def run_reset_single_turn(port: str, baud: int):
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 
+def run_esp32_write_verify(port: str, baud: int):
+    """
+    Writes canary 99 directly to 0x28 (Torque Enable) from the laptop,
+    then lets the ESP32 boot and call set_torque(true) which writes 0x01 to 0x28.
+    Readback tells us exactly what happened:
+      0x28 = 1  -> torque write WORKS
+      0x28 = 0  -> ESP32 wrote 0x00 (wrong value)
+      0x28 = 99 -> ESP32 wrote NOTHING to 0x28
+    """
+    header("ESP32 Write Verification")
+    print("  Writes canary 99 to 0x28 (Torque Enable) from laptop.")
+    print("  Then you boot the ESP32 which calls set_torque(true) = write 0x01 to 0x28.")
+    print("  Readback tells us exactly what happened:")
+    print("    0x28 = 1  -> torque write WORKS")
+    print("    0x28 = 0  -> ESP32 wrote 0x00 (wrong value)")
+    print("    0x28 = 99 -> ESP32 wrote NOTHING to 0x28")
+    print()
+
+    print("  Scanning for servos (IDs 1-10)...", end="", flush=True)
+    found = []
+    try:
+        with serial.Serial(port, baud, timeout=0.15) as ser:
+            for sid in range(1, 11):
+                if ping(ser, sid):
+                    found.append(sid)
+    except serial.SerialException as e:
+        print(f"\n  Serial error: {e}")
+        return
+    print(f"\r  Found: {found}{' ' * 30}")
+
+    if not found:
+        print("  No servos found.")
+        return
+
+    print(f"\n  Writing canary 99 to reg 0x28 (Torque Enable) on all servos...")
+    try:
+        with serial.Serial(port, baud, timeout=0.15) as ser:
+            for sid in found:
+                ser.reset_input_buffer()
+                ser.write(build_write(sid, 0x28, [99]))
+                time.sleep(0.05)
+                ser.read(ser.in_waiting)
+                readback = read_byte_register(ser, sid, 0x28)
+                print(f"  ID {sid}: wrote 99, readback = {readback}")
+    except serial.SerialException as e:
+        print(f"\n  Serial error: {e}")
+        return
+
+    print()
+    print("  Canary written. Now:")
+    print("  1. Disconnect this laptop's serial connection from the servo bus.")
+    print("  2. Connect the ESP32 to the servo bus.")
+    print("  3. Power-cycle the ESP32 - let it fully boot (wait 3 seconds).")
+    print("  4. Power down the ESP32.")
+    print("  5. Disconnect the ESP32 from the servo bus.")
+    print("  6. Reconnect this laptop's serial connection.")
+    prompt("  7. Press Enter to read back")
+
+    print()
+    print(f"  {'ID':<6} {'0x28 readback':<20} {'Conclusion'}")
+    print(f"  {'-'*6} {'-'*20} {'-'*50}")
+    try:
+        with serial.Serial(port, baud, timeout=0.15) as ser:
+            for sid in found:
+                val = read_byte_register(ser, sid, 0x28)
+                if val is None:
+                    val_str    = "no response"
+                    conclusion = "cannot read -- check connection"
+                elif val == 1:
+                    val_str    = "1"
+                    conclusion = "TORQUE WRITE WORKS -- 0x01 landed correctly"
+                elif val == 0:
+                    val_str    = "0"
+                    conclusion = "ESP32 wrote 0x00 (disable) or value corrupted"
+                elif val == 99:
+                    val_str    = "99 (canary unchanged)"
+                    conclusion = "ESP32 wrote NOTHING to 0x28"
+                else:
+                    val_str    = str(val)
+                    conclusion = f"unexpected value {val} -- packet corrupted?"
+                print(f"  {sid:<6} {val_str:<20} {conclusion}")
+    except serial.SerialException as e:
+        print(f"\n  Serial error: {e}")
+        return
+
+    print()
+    print("  Restoring 0x28 to 0 (torque off) on all servos...")
+    try:
+        with serial.Serial(port, baud, timeout=0.15) as ser:
+            for sid in found:
+                ser.reset_input_buffer()
+                ser.write(build_write(sid, 0x28, [0]))
+                time.sleep(0.05)
+                ser.read(ser.in_waiting)
+    except serial.SerialException as e:
+        print(f"\n  Serial error: {e}")
+    print("  Done.\n")
+
+def run_telemetry(port: str, baud: int):
+    """
+    Live telemetry monitor — reads position, load, voltage, temperature,
+    move flag, and status register from all servos at ~10Hz.
+
+    This bypasses the ESP32s entirely — the laptop talks directly to the
+    servo chain via the USB-serial adapter. Use this to confirm whether
+    the power rail and servo state are stable independent of the ESP32
+    firmware.
+
+    Columns:
+      ID   pos    load    volt   temp  moving  status  faults
+    """
+    header("Telemetry Monitor  —  Direct Laptop → Servo Bus")
+    print("  Reads all servos at ~10Hz. Press Ctrl-C to stop.\n")
+    print("  Register map:")
+    print("    0x38/0x39  Present Position  (ticks)")
+    print("    0x3C/0x3D  Present Load      (signed, motor drive duty)")
+    print("    0x3E       Voltage           (×0.1V)")
+    print("    0x3F       Temperature       (°C)")
+    print("    0x41       Status            (fault bitmask)")
+    print("    0x42       Move Flag         (1=moving)\n")
+
+    STATUS_BITS = {
+        0: "VOLT",
+        1: "SENSOR",
+        2: "TEMP",
+        3: "OVERCURRENT",
+        4: "ANGLE",
+        5: "OVERLOAD",
+    }
+
+    print("  Scanning for servos...", end="", flush=True)
+    found = []
+    try:
+        with serial.Serial(port, baud, timeout=0.1) as ser:
+            for sid in range(1, 11):
+                if ping(ser, sid):
+                    found.append(sid)
+    except serial.SerialException as e:
+        print(f"\n  Serial error: {e}")
+        return
+    print(f"\r  Found: {found}{' ' * 30}\n")
+
+    if not found:
+        print("  No servos found.")
+        return
+
+    # Column header
+    col_w = 10
+    hdr = f"  {'ID':>3}  {'pos':>5}  {'load':>6}  {'volt':>6}  {'temp':>5}  {'moving':>6}  {'status':>6}  faults"
+    sep = "  " + "─" * (len(hdr) - 2)
+
+    sample = 0
+    try:
+        with serial.Serial(port, baud, timeout=0.1) as ser:
+            while True:
+                sample += 1
+                ts = time.strftime("%H:%M:%S")
+                print(f"\n  [{ts}]  sample={sample}")
+                print(hdr)
+                print(sep)
+
+                for sid in found:
+                    # ── Position read (0x38, 2 bytes) ────────────────────────
+                    ser.reset_input_buffer()
+                    ser.write(build_read(sid, 0x38, 2))
+                    time.sleep(0.008)
+                    raw_pos = ser.read(8)
+                    pos = "ERR"
+                    if len(raw_pos) >= 8 and raw_pos[4] == 0x00:
+                        pos = (raw_pos[6] << 8) | raw_pos[5]
+
+                    # ── Status burst read (0x3C through 0x42 = 7 bytes) ──────
+                    ser.reset_input_buffer()
+                    ser.write(build_read(sid, 0x3C, 7))
+                    time.sleep(0.015)
+                    raw_st = ser.read(13)
+
+                    load = temp = volt = moving = status = "ERR"
+                    faults = ""
+                    if len(raw_st) >= 13 and raw_st[4] == 0x00:
+                        load   = (raw_st[6] << 8) | raw_st[5]
+                        # load is signed
+                        if load > 32767:
+                            load -= 65536
+                        volt   = f"{raw_st[7] * 0.1:.1f}V"
+                        temp   = f"{raw_st[8]}°C"
+                        # raw_st[9] = async write flag (skip)
+                        status = raw_st[10]
+                        moving = raw_st[11]
+
+                        if status != 0:
+                            faults = " ".join(
+                                v for k, v in STATUS_BITS.items()
+                                if (status >> k) & 1
+                            )
+                        else:
+                            faults = "ok"
+
+                        # Highlight voltage warnings
+                        volt_f = raw_st[7] * 0.1
+                        if volt_f < 6.0:
+                            volt = f"{volt} ⚠LOW"
+                        elif volt_f > 13.0:
+                            volt = f"{volt} ⚠HIGH"
+
+                        status = f"0x{status:02X}"
+
+                    print(f"  {sid:>3}  {str(pos):>5}  {str(load):>6}  "
+                          f"{str(volt):>8}  {str(temp):>5}  "
+                          f"{str(moving):>6}  {str(status):>6}  {faults}")
+
+                # 10Hz — 100ms between samples, minus time spent reading
+                time.sleep(0.05)
+
+    except KeyboardInterrupt:
+        print("\n\n  Stopped.\n")
+    except serial.SerialException as e:
+        print(f"\n  Serial error: {e}")
+
+
 def main():
     print(f"\n{'═' * 48}")
     print( "   Serial Bus Servo Scanner & ID Programmer")
@@ -1401,16 +1621,18 @@ def main():
 
     mode = choose(
         [
-            ("Scan",               "Find all servo IDs currently on the bus"),
-            ("Assign IDs",         "Number servos 1-by-1 (use when all share the same factory ID)"),
-            ("Motion Test",        f"Move each servo ±{TEST_DEGREES}° and return to start"),
-            ("Set Limits",         "Back-drive each servo to its endpoints and write EEPROM angle limits"),
-            ("Position Monitor",   "Live tick + degree readout for all servos simultaneously"),
-            ("Single-Turn Reset",  "Clear multi-turn mode (fix position readings above 4095)"),
-            ("Diagnostics",        "Read key config registers: baud rate, return delay, response level"),
-            ("Fix Config",         "Set baud rate → 1 Mbps and response level → all commands"),
-            ("EEPROM Dump",        "Read all known EEPROM registers — compare arms to find mismatches"),
-            ("Set Zero Point",     "Calibrate reference angle per servo (writes position offset to EEPROM)"),
+            ("Scan",                  "Find all servo IDs currently on the bus"),
+            ("Assign IDs",            "Number servos 1-by-1 (use when all share the same factory ID)"),
+            ("Motion Test",           f"Move each servo ±{TEST_DEGREES}° and return to start"),
+            ("Set Limits",            "Back-drive each servo to its endpoints and write EEPROM angle limits"),
+            ("Position Monitor",      "Live tick + degree readout for all servos simultaneously"),
+            ("Single-Turn Reset",     "Clear multi-turn mode (fix position readings above 4095)"),
+            ("Diagnostics",           "Read key config registers: baud rate, return delay, response level"),
+            ("Fix Config",            "Set baud rate → 1 Mbps and response level → all commands"),
+            ("EEPROM Dump",           "Read all known EEPROM registers — compare arms to find mismatches"),
+            ("Set Zero Point",        "Calibrate reference angle per servo (writes position offset to EEPROM)"),
+            ("ESP32 Write Verify",    "Check whether ESP32 WRITE commands are reaching the servos"),
+            ("Telemetry Monitor",     "Live pos/load/volt/temp/status at 10Hz — bypasses ESP32 entirely"),
         ],
         "Mode"
     )
@@ -1433,8 +1655,12 @@ def main():
         run_fix_config(port, baud)
     elif mode == 8:
         run_eeprom_dump(port, baud)
-    else:
+    elif mode == 9:
         run_set_zero_point(port, baud)
+    elif mode == 10:
+        run_esp32_write_verify(port, baud)
+    else:
+        run_telemetry(port, baud)
 
     again = prompt("Return to main menu? (y/n)", "n")
     if again.lower() == "y":
